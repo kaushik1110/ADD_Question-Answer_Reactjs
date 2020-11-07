@@ -1,88 +1,147 @@
 import React, { useState } from "react";
+import './abc.css'
+
+import { Accordion, Card, Button } from 'react-bootstrap';
 const AddData = () => {
   const [data, setData] = useState({
     question: "",
     answer: "",
     detail: [],
+    questionError:'',
+    answerError:'',
   });
   const submitHandler = () => {
+    console.log("que:->",data.question);
+    console.log("ans:->",data.answer);
+    if(data.question === "" && data.answer === ""){
+      setData({
+        questionError:"Enter your questionuu",
+        answerError:"please enter your answer"
+      })
+      console.log("all");
+    }
+    else if(data.question === "" && data.answer === undefined){
+      setData({
+        questionError:"Enter your question",
+        answerError:"please enter your answer"
+      })
+    }
+    else if(data.answer === "" && data.question === undefined){
+      setData({
+        questionError:"Enter your question",
+        answerError:"please enter your answer"
+      })
+    }
+    else if(data.question === "" || data.question === undefined){
+      setData({
+    questionError:"please enter your question"
+      })
+      console.log("que");
+    }
+    
+    else if(data.answer === "" || data.answer === undefined){
+      setData({
+        answerError:"please enter your answer"
+      })
+      console.log("ans");
+
+    }
+    else {
+      setData({
+        detail: [
+           ...data.detail,
+          {
+            id: Math.floor(Math.random() * 100),
+            question: data.question,
+            answer: [data.answer],
+          },
+        ],
+      });
+    }
+    
+  };
+  // console.log(data.detail);
+
+  const submitAnswerHandler = () => {
+    // console.log("data",data.detail[0].answer);
     setData({
+      // ...data.detail,
       detail: [
         {
-          id: Math.floor(Math.random() * 100),
-          question: data.question,
-          answer: data.answer,
+          answer: [...data.detail[0].answer,data.answer],
         },
-      ],
-    });
-    // events.preventDefault();
-    // setData({
-    //     ...data,
-    //   [events.target.name]: events.target.value,
-    // });
-  };
-  console.log(data.detail);
+      ]
+      
+    })
+    // console.log("new asn", data.answer);
+  }
 
   const changeHandler = (event) => {
+    console.log("datadetail",data.detail);
     setData({
       ...data,
       [event.target.name]: event.target.value,
+      questionError:'',
+      answerError:'',
     });
   };
-  console.log(data);
-
   return (
     <div>
-      <lable>Question</lable>
-      <input type="text" name="question" onChange={changeHandler}></input>
-
-      <lable>Answer</lable>
-      <input type="text" name="answer" onChange={changeHandler}></input>
-      <button type="button" class="btn btn-primary" onClick={submitHandler}>
+      <button type="button" className="btn btn-primary"  data-toggle="modal" data-target="#exampleModal" >
         Add Data
       </button>
       <br />
       {data &&
         data.detail &&
         data.detail.map((item) => (
-          <li key={item.id}>
-            Question : {item.question} Answer: {item.answer}
-          </li>
+          <div>
+          <Accordion>
+  <Card key={item.id}>
+    <Card.Header >
+      <Accordion.Toggle as={Button} variant="link" eventKey="0">
+      {item.question}
+      </Accordion.Toggle>
+    </Card.Header>
+    <Accordion.Collapse eventKey="0">
+      <Card.Body>{item.id} {item.answer} <br/><button className="" onClick= {submitAnswerHandler} data-toggle="modal" data-target="#exampleModal" data-whatever="">add new</button></Card.Body>
+    </Accordion.Collapse>
+  </Card>
+</Accordion>
+</div>
         ))}
-      {/* <lable>Question</lable>
-      <p>{data.question ? data.question :  ""}</p>
-      <lable>Answer</lable>
-      <p>{data.answer ? data.answer :  ""}</p> */}
 
-      {/* <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="">Add Data</button>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<div className="modal fade" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog" role="document">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">QuesAns</h5>
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div className="modal-body">
         <form>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Question:</label>
-            <input type="text" class="form-control" id="recipient-name"/>
+          <div className="form-group">
+            <label  className="col-form-label">Question :</label>
+            <input type="text" className="form-control" id="recipient-name" name="question" onChange={changeHandler}/>
+        <div className="error">{data.questionError}</div>
           </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Answer:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+          <div className="form-group">
+            <label  className="col-form-label">Answer :</label>
+            <textarea className="form-control" id="message-text" name="answer" onChange={changeHandler}/>
+        <div className="error">{data.answerError}</div>
+
           </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-primary" onClick={submitHandler} >Save</button>
+        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+        {/* data-dismiss="modal" aria-label="Close" */}
       </div>
     </div>
   </div>
-</div> */}
+</div>
     </div>
   );
 };
