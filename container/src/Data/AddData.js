@@ -15,7 +15,7 @@ const AddData = () => {
     console.log("ans:->", data.answer);
     if (data.question === "" && data.answer === "") {
       setData({
-        questionError: "Enter your questionuu",
+        questionError: "Enter your question",
         answerError: "please enter your answer",
       });
       console.log("all");
@@ -53,7 +53,8 @@ const AddData = () => {
     }
   };
 
-  const submitAnswerHandler = () => {
+  const submitAnswerHandler = (event) => {
+    event.preventDefault();
     setData({
       ...data,
       ...data.detail,
@@ -90,8 +91,8 @@ const AddData = () => {
       {data &&
         data.detail &&
         data.detail.map((item) => (
-          <div>
-            <Accordion>
+          <div>  
+            <Accordion>  
               {item && console.log("iiii", item)}
               <Card key={item.id}>
                 <Card.Header>
