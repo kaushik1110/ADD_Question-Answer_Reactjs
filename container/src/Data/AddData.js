@@ -70,6 +70,7 @@ const AddData = () => {
 
   const changeHandler = (event) => {
     console.log("datadetail", data.detail);
+    console.log("data",event.target.value);
     setData({
       ...data,
       [event.target.name]: event.target.value,
@@ -90,20 +91,20 @@ const AddData = () => {
       <br />
       {data &&
         data.detail &&
-        data.detail.map((item) => (
-          <div>  
-            <Accordion>  
+        data.detail.map((item,index) => (
+          <div key={item.id}>  
+            <Accordion >  
               {item && console.log("iiii", item)}
-              <Card key={item.id}>
+              <Card>
                 <Card.Header>
-                  <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                    {item.question}
+                  <Accordion.Toggle as={Button} variant="link" eventKey="0" >
+                    {index+1} {item.question}
                   </Accordion.Toggle>
                 </Card.Header>
-                <Accordion.Collapse eventKey="0">
-                  <Card.Body>
+                <Accordion.Collapse eventKey="0" >
+                  <Card.Body > 
                     {item.answer.map((answer, index) => (
-                      <Card.Body>
+                      <Card.Body key={index}>
                         <div>
                           {index + 1} {answer}
                         </div>
@@ -132,6 +133,7 @@ const AddData = () => {
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
+        <div></div>
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">

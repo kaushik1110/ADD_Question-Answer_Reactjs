@@ -41,6 +41,7 @@ const QandA = () => {
             setQna({
                 questionError: "please enter question"
             })
+            
         }
         else if (qna.answer === "") {
             setQna({
